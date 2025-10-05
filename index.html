@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Canastia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1>Canastia</h1>
+        <p>Del campo a la comodidad de tu casa</p>
+      </div>
+
+      <nav class="main-nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#about">Nosotros</a>
+        <a href="#productos">Productos</a>
+        <a href="#testimonios">Testimonios</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="open-cart" aria-label="Abrir carrito">🛒 <span id="cart-count">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Slider -->
+  <section id="inicio" class="hero">
+  <div class="slider" id="slider">
+
+    <!-- Slider 1 -->
+    <div class="slide active" style="background-image:url('images/slider/Imagen2.jpeg')">
+      <div class="slide-content">
+        <h2>La esencia de Canastia</h2>
+        <p>En Canastia, traemos lo mejor del campo colombiano directamente a tu mesa, con el cariño y la dedicación de nuestros agricultores.</p>
+      </div>
+    </div>
+
+    <!-- Slider 2 -->
+    <div class="slide" style="background-image:url('images/slider/imagen1.jpeg')">
+      <div class="slide-content">
+        <h2>Nuestro compromiso</h2>
+        <p>Colaboramos estrechamente con agricultores locales, fomentando el desarrollo rural y apoyando la producción de productos sostenibles y de alta calidad.</p>
+      </div>
+    </div>
+
+    <!-- Slider 3 -->
+    <div class="slide" style="background-image:url('images/slider/imagen3.jpeg')">
+      <div class="slide-content">
+        <h2>Nuestro servicio</h2>
+        <p>Haz tu pedido en línea y disfruta de productos naturales, frescos y de confianza que llegarán directamente a la puerta de tu casa.</p>
+      </div>
+    </div>
+
+    <div class="slider-controls">
+      <button id="prev-slide" aria-label="Anterior">‹</button>
+      <button id="next-slide" aria-label="Siguiente">›</button>
+    </div>
+  </div>
+</section>
+
+  <!-- Acerca de nosotros -->
+<section class="section about" id="about">
+  <div class="container about-container">
+    <div class="about-text">
+      <h2>Acerca de nosotros</h2>
+      <p>
+        En Canastia, apreciamos enormemente el trabajo rural y a las manos que lo hacen posible.  
+        Nos dedicamos a vincular a las familias con verduras y frutas frescas, que son cosechadas con amor por los agricultores de la región.  
+        Cada pedido que realizamos es más que un simple negocio: es una forma de respaldar al sector agrícola, 
+        proteger nuestro suelo y proporcionar la frescura del campo directamente en su hogar.
+      </p>
+      <a href="#productos" class="about-btn">Explorar productos</a>
+    </div>
+
+    <div class="about-highlights">
+      <div class="highlight">
+        <img src="https://cdn-icons-png.flaticon.com/512/2965/2965567.png" alt="Compromiso">
+        <h3>Compromiso</h3>
+        <p>Garantizamos frescura, transparencia y productos seleccionados cuidadosamente para tu bienestar.</p>
+      </div>
+
+      <div class="highlight">
+        <img src="https://cdn-icons-png.flaticon.com/512/728/728093.png" alt="Sostenibilidad">
+        <h3>Sostenibilidad</h3>
+        <p>Apoyamos prácticas agrícolas responsables que cuidan la tierra y fomentan el desarrollo local.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Productos -->
+  <section id="productos" class="section products">
+    <div class="container">
+      <h2>Nuestros productos</h2>
+
+      <div class="categories">
+        <button class="cat-btn active" data-cat="frutas">Frutas</button>
+        <button class="cat-btn" data-cat="verduras">Verduras</button>
+      </div>
+
+      <div id="product-area" class="product-area">
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonios -->
+  <section id="testimonios" class="section testimonials">
+    <div class="container">
+      <h2>Testimonios</h2>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <img src="https://i.pravatar.cc/100?img=5" alt="Cliente 1">
+          <p>"Me encantó la calidad de las frutas. Se nota que son frescas y recién cosechadas. 
+            Además, la entrega fue rápida y el trato muy amable. ¡Se siente el cariño del campo!"</p>
+          <span>— Laura</span>
+        </div>
+        <div class="testi-card">
+          <img src="https://i.pravatar.cc/100?img=8" alt="Cliente 2">
+          <p>"Siempre hacía mercado en persona, pero con Canastia todo fue más fácil. 
+            Pedí desde mi celular y al otro día tenía todo en la puerta, sin perder frescura. ¡Recomendadísimos!"</p>
+          <span>— Andrés</span>
+        </div>
+        <div class="testi-card">
+          <img src="https://i.pravatar.cc/100?img=7" alt="Cliente 3">
+          <p>"Lo que más me gusta es que apoyan a los agricultores locales. Las verduras llegan limpias, frescas y en buen estado. 
+            Es bueno saber que mi compra también ayuda al campo."</p>
+          <span>— María</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto" class="section contact">
+    <div class="container">
+      <h2>Contacto</h2>
+      <div class="contact-grid">
+        <form id="contact-form">
+          <label>Nombre
+            <input type="text" name="name" required>
+          </label>
+          <label>Correo
+            <input type="email" name="email" required>
+          </label>
+          <label>Mensaje
+            <textarea name="message" rows="4" required></textarea>
+          </label>
+          <button class="btn" type="submit">Enviar mensaje</button>
+        </form>
+
+        <div class="contact-info">
+          <h4>Encuéntranos</h4>
+          <p>Dirección: Calle 59b sur #47-70, Bogotá</p>
+          <p>Teléfono: +57 305 3451223</p>
+          <p>Email: canastia@gmail.com</p>
+          <div class="socials">Síguenos: <a href="#">Instagram</a> • <a href="#">Facebook</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Canastia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Cartas -->
+  <aside id="cart-panel" class="cart-panel" aria-hidden="true">
+    <div class="cart-header">
+      <h3>Tu carrito</h3>
+      <button id="close-cart" aria-label="Cerrar carrito">✕</button>
+    </div>
+
+    <div class="cart-body">
+      <div class="cart-controls">
+        <label class="unit-toggle">
+          <span>Comprar por:</span>
+          <select id="global-unit">
+            <option value="kg">Kilos (kg)</option>
+            <option value="lb">Libras (lb)</option>
+          </select>
+        </label>
+      </div>
+
+      <ul id="cart-items" class="cart-items">
+      </ul>
+
+      <div class="cart-footer">
+        <div class="totals">
+          <div><strong>Total:</strong> <span id="cart-total">0</span></div>
+        </div>
+        <div class="cart-actions">
+          <button id="clear-cart" class="btn">Vaciar carrito</button>
+          <button id="checkout" class="btn primary">Finalizar compra</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>
