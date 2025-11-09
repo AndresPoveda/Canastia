@@ -75,6 +75,36 @@ body{
   background:transparent; border:none; cursor:pointer; font-size:16px; color:white;
 }
 
+/* === Jerarquía tipográfica aplicada === */
+.brand h1 {
+  margin: 0;
+  font-family: "Montserrat";
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.brand p {
+  margin: 0;
+  font-size: 12px;
+  color: #e6f5e4;
+}
+
+.main-nav{display:flex; gap:14px; align-items:center}
+.main-nav a{
+  color:white;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+  opacity:0.95;
+  transition:0.3s;
+}
+.main-nav a:hover{color:#bdf2be; transform:translateY(-2px);}
+.header-actions button{
+  background:transparent; border:none; cursor:pointer; font-size:16px; color:white;
+}
+
 /* -- Slider -- */
 .hero{width:100%; overflow:hidden}
 .slider{
@@ -161,6 +191,24 @@ body{
 .section:nth-child(odd){background:var(--green-pale);}
 .section:nth-child(even){background:var(--green-light);}
 
+/* === Títulos y subtítulos de secciones === */
+.section h2 {
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--leaf-dark);
+  text-align: left;
+  font-family: "Montserrat", sans-serif;
+  margin-bottom: 10px;
+}
+
+.section h3 {
+  font-size: 30px;
+  color: var(--leaf);
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  margin-bottom: 8px;
+}
+
 /* -- Acerca de nosotros -- */
 .about-container {
   display: grid;
@@ -176,13 +224,13 @@ body{
 }
 
 .about-text h2 {
-  font-size: 32px;
+  font-size: 38px;
   font-family: "Montserrat";
   color: var(--leaf-dark);
 }
 
 .about-text p {
-  font-size: 16px;
+  font-size: 15px;
   color: #333;
   line-height: 1.7;
   max-width: 480px;
@@ -294,6 +342,25 @@ body{
   color: white;
   border-color: transparent;
   box-shadow: 0 8px 20px rgba(60, 140, 80, 0.12);
+}
+
+.cat-btn:hover {
+  background: var(--leaf);
+  color: white;
+  transform: scale(1.05);
+}
+
+.cat-btn[data-category="verduras"],
+.cat-btn.verduras {
+  background: #3c8a52;
+  color: #ffffff;
+  border: none;
+}
+
+.cat-btn[data-category="verduras"]:hover,
+.cat-btn.verduras:hover {
+  background: #2f6e44; 
+  transform: scale(1.07);
 }
 
 .product-area {

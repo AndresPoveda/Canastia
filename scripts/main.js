@@ -23,7 +23,33 @@ const PRODUCTS = {
       { id: 'papa', nombre: 'Papa', precioKg: 1600, unidad: 'kg', img: 'images/verduras/Papa.png', descripcion: 'Versátil y económica.' }
     ]
   },
+  snacks_saludables: {
+    frutos_secos: [
+      { id: 'almendras', nombre: 'Almendras', precioKg: 18000, unidad: 'kg', img: 'images/snacks/Almendras.png', descripcion: 'Ricas en proteínas y grasas saludables.' },
+      { id: 'nueces', nombre: 'Nueces', precioKg: 19000, unidad: 'kg', img: 'images/snacks/Nueces.png', descripcion: 'Ideales para picar entre comidas.' },
+      { id: 'mani', nombre: 'Maní tostado', precioKg: 12000, unidad: 'kg', img: 'images/snacks/Mani.png', descripcion: 'Excelente fuente de energía y proteínas.' }
+    ],
+    barritas_energeticas: [
+      { id: 'barrita_miel', nombre: 'Barrita de miel y avena', precioKg: 16000, unidad: 'kg', img: 'images/snacks/BarritaMiel.jpg', descripcion: 'Energía natural con miel y avena.' },
+      { id: 'barrita_frutas', nombre: 'Barrita de frutas', precioKg: 15000, unidad: 'kg', img: 'images/snacks/BarritaFrutas.png', descripcion: 'Deliciosa mezcla de frutas secas.' },
+      { id: 'barrita_banano', nombre: 'Barrita de banano y avena', precioKg: 17000, unidad: 'kg', img: 'images/snacks/BarritaBananoAvena.jpg', descripcion: 
+        'Dulce y nutritiva, elaborada con banano natural y avena.' }
+    ]
+  },
+  bebidas_naturales: {
+    jugos: [
+      { id: 'jugo_mango', nombre: 'Jugo de Mango', precioKg: 3000, unidad: 'kg', img: 'images/bebidas/JugoMango.png', descripcion: 'Refrescante y sin azúcar añadida.' },
+      { id: 'jugo_pina', nombre: 'Jugo de Piña', precioKg: 2800, unidad: 'kg', img: 'images/bebidas/JugoPiña.png', descripcion: 'Ideal para acompañar comidas.' },
+      { id: 'jugo_naranja', nombre: 'Jugo de Naranja', precioKg: 3200, unidad: 'kg', img: 'images/bebidas/JugoNaranja.png', descripcion: 'Natural y lleno de vitamina C.' }
+    ],
+    batidos: [
+      { id: 'batido_fresa', nombre: 'Batido de Fresa', precioKg: 3500, unidad: 'kg', img: 'images/bebidas/BatidoFresa.png', descripcion: 'Natural y cremoso, con leche vegetal.' },
+      { id: 'batido_banano', nombre: 'Batido de Banano', precioKg: 3400, unidad: 'kg', img: 'images/bebidas/BatidoBanano.jpg', descripcion: 'Perfecto para recargar energía.' },
+      { id: 'batido_coco', nombre: 'Batido de Coco', precioKg: 3600, unidad: 'kg', img: 'images/bebidas/BatidoCoco.png', descripcion: 'Refrescante batido elaborado con coco natural.' }
+    ]
+  }
 };
+
 
 /* -- Estado del carrito -- */
 let cart = [];
@@ -39,7 +65,6 @@ const closeCartBtn = document.getElementById('close-cart');
 const cartItemsEl = document.getElementById('cart-items');
 const cartTotalEl = document.getElementById('cart-total');
 const cartCountEl = document.getElementById('cart-count');
-const globalUnitSelect = document.getElementById('global-unit');
 const clearCartBtn = document.getElementById('clear-cart');
 const checkoutBtn = document.getElementById('checkout');
 
@@ -57,7 +82,7 @@ function renderCategory(categoryKey) {
   if (!PRODUCTS[categoryKey]) return;
   const cat = PRODUCTS[categoryKey];
   for (const sub in cat) {
-    const subTitle = sub.replace(/_/g,' ').toUpperCase();
+    const subTitle = sub.replace(/_/g, ' ').toUpperCase();
     const subHeader = document.createElement('h3');
     subHeader.textContent = subTitle;
     productArea.appendChild(subHeader);
@@ -78,24 +103,30 @@ function renderCategory(categoryKey) {
           <div class="price-sub" style="font-size:13px;color:var(--muted)">Precio por peso</div>
         </div>
         <div class="card-actions">
-          <input class="qty-input" type="number" min="0.1" step="0.1" value="1" title="Peso a comprar (kg)">
+          <input class="qty-input" type="number" min="0.1" step="0.1" value="1" title="Peso a comprar">
+          <select class="unit-select">
+            <option value="kg" selected>kg</option>
+            <option value="lb">lb</option>
+          </select>
           <button class="btn add-to-cart">Agregar al carrito</button>
         </div>
       `;
       const btn = card.querySelector('.add-to-cart');
       const qtyInput = card.querySelector('.qty-input');
+      const unitSelect = card.querySelector('.unit-select');
       btn.addEventListener('click', () => {
-        const weightKg = parseFloat(qtyInput.value) || 1;
-        addToCart({...p, pricePerKg: p.precioKg}, weightKg);
+        const unit = unitSelect.value;
+        const weight = parseFloat(qtyInput.value) || 1;
+        const weightKg = unit === 'kg' ? weight : lbToKg(weight);
+        addToCart({ ...p, pricePerKg: p.precioKg, unidad: unit }, weightKg, unit);
       });
-
       grid.appendChild(card);
     });
   }
 }
 
-/* -- Cartas funciones -- */
-function addToCart(product, weightKg = 1) {
+/* -- Carrito funciones -- */
+function addToCart(product, weightKg = 1, unidad = 'kg') {
   const existing = cart.find(i => i.id === product.id);
   if (existing) {
     existing.weightKg = +(existing.weightKg + weightKg).toFixed(3);
@@ -105,7 +136,8 @@ function addToCart(product, weightKg = 1) {
       nombre: product.nombre,
       img: product.img,
       pricePerKg: product.pricePerKg || product.precioKg || 0,
-      weightKg: +weightKg.toFixed(3)
+      weightKg: +weightKg.toFixed(3),
+      unidad: unidad
     });
   }
   updateCartUI();
@@ -117,11 +149,17 @@ function removeFromCart(id) {
   updateCartUI();
 }
 
-function updateWeightInCart(id, newWeight, unit='kg') {
+function updateWeightInCart(id, newWeight, unit = 'kg') {
   let wKg = unit === 'kg' ? parseFloat(newWeight) : lbToKg(parseFloat(newWeight));
   if (isNaN(wKg) || wKg <= 0) return;
   const item = cart.find(i => i.id === id);
   if (item) item.weightKg = +wKg.toFixed(3);
+  updateCartUI();
+}
+
+function updateUnitInCart(id, newUnit) {
+  const item = cart.find(i => i.id === id);
+  if (item) item.unidad = newUnit;
   updateCartUI();
 }
 
@@ -130,7 +168,7 @@ function clearCart() {
   updateCartUI();
 }
 
-function cartTotal(currentUnit = 'kg') {
+function cartTotal() {
   let total = 0;
   cart.forEach(i => total += i.pricePerKg * i.weightKg);
   return total;
@@ -142,61 +180,66 @@ function updateCartUI() {
   cart.forEach(item => {
     const li = document.createElement('li');
     li.className = 'cart-item';
-    const unit = globalUnitSelect.value || 'kg';
+    const unit = item.unidad || 'kg';
     const displayWeight = unit === 'kg' ? item.weightKg : +(kgToLb(item.weightKg)).toFixed(2);
-    const weightLabel = unit === 'kg' ? `${displayWeight} kg` : `${displayWeight} lb`;
     const priceForItem = item.pricePerKg * item.weightKg;
 
     li.innerHTML = `
       <img src="${item.img}" alt="${item.nombre}" onerror="this.src='images/placeholder.jpg'">
       <div class="meta">
         <h5>${item.nombre}</h5>
-        <p>${item.pricePerKg ? 'COP ' + formatCurrency(item.pricePerKg) + ' / kg' : ''}</p>
-        <p class="small">Peso: <input data-id="${item.id}" class="cart-weight" style="width:80px;border-radius:6px;padding:6px;border:1px solid #eee" value="${displayWeight}"> ${unit}</p>
+        <p>COP ${formatCurrency(item.pricePerKg)} / kg</p>
+        <p class="small">Peso:
+          <input data-id="${item.id}" class="cart-weight" style="width:70px;border-radius:6px;padding:6px;border:1px solid #eee" value="${displayWeight}">
+          <select class="cart-unit" data-id="${item.id}">
+            <option value="kg" ${unit === 'kg' ? 'selected' : ''}>kg</option>
+            <option value="lb" ${unit === 'lb' ? 'selected' : ''}>lb</option>
+          </select>
+        </p>
       </div>
       <div class="actions">
         <div style="font-weight:700">COP ${formatCurrency(priceForItem)}</div>
         <button data-id="${item.id}" class="remove-item" style="background:transparent;border:none;color:#cc4444;cursor:pointer">Eliminar</button>
       </div>
     `;
-
     cartItemsEl.appendChild(li);
   });
 
-  cartItemsEl.querySelectorAll('.remove-item').forEach(btn=>{
-    btn.addEventListener('click', e=>{
-      const id = e.target.dataset.id;
-      removeFromCart(id);
-    });
+  cartItemsEl.querySelectorAll('.remove-item').forEach(btn => {
+    btn.addEventListener('click', e => removeFromCart(e.target.dataset.id));
   });
-  cartItemsEl.querySelectorAll('.cart-weight').forEach(input=>{
-    input.addEventListener('change', e=>{
+
+  cartItemsEl.querySelectorAll('.cart-weight').forEach(input => {
+    input.addEventListener('change', e => {
       const id = e.target.dataset.id;
       const val = parseFloat(e.target.value);
+      const unit = e.target.parentElement.querySelector('.cart-unit').value;
       if (isNaN(val) || val <= 0) { updateCartUI(); return; }
-      updateWeightInCart(id, val, globalUnitSelect.value);
+      updateWeightInCart(id, val, unit);
+    });
+  });
+
+  cartItemsEl.querySelectorAll('.cart-unit').forEach(select => {
+    select.addEventListener('change', e => {
+      const id = e.target.dataset.id;
+      const newUnit = e.target.value;
+      updateUnitInCart(id, newUnit);
     });
   });
 
   const total = cartTotal();
   cartTotalEl.textContent = `COP ${formatCurrency(total)}`;
-
-  const count = cart.reduce((s,i)=> s + i.weightKg, 0);
   cartCountEl.textContent = cart.length;
 }
 
-/* -- Carta panel de control -- */
-function openCart(){
+/* -- Panel carrito -- */
+function openCart() {
   cartPanel.classList.add('open');
   overlay.classList.add('show');
-  cartPanel.setAttribute('aria-hidden','false');
-  overlay.setAttribute('aria-hidden','false');
 }
-function closeCart(){
+function closeCart() {
   cartPanel.classList.remove('open');
   overlay.classList.remove('show');
-  cartPanel.setAttribute('aria-hidden','true');
-  overlay.setAttribute('aria-hidden','true');
 }
 
 /* -- Eventos globales -- */
@@ -204,24 +247,20 @@ openCartBtn.addEventListener('click', openCart);
 closeCartBtn.addEventListener('click', closeCart);
 overlay.addEventListener('click', closeCart);
 
-globalUnitSelect.addEventListener('change', ()=>{
-  updateCartUI();
-});
-
-clearCartBtn.addEventListener('click', ()=>{
+clearCartBtn.addEventListener('click', () => {
   if (confirm('¿Vaciar el carrito?')) clearCart();
 });
 
-checkoutBtn.addEventListener('click', ()=>{
+checkoutBtn.addEventListener('click', () => {
   if (cart.length === 0) { alert('El carrito está vacío'); return; }
   alert('Gracias por tu compra (simulación). Total: ' + cartTotalEl.textContent);
   clearCart();
 });
 
-/* -- Cambiar categoria --*/
-catButtons.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    catButtons.forEach(b=>b.classList.remove('active'));
+/* -- Cambiar categoría -- */
+catButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    catButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     renderCategory(btn.dataset.cat);
   });
@@ -234,31 +273,32 @@ const nextBtn = document.getElementById('next-slide');
 let slideIndex = 0;
 let slideInterval;
 
-function showSlide(idx){
-  slides.forEach(s=> s.classList.remove('active'));
+function showSlide(idx) {
+  slides.forEach(s => s.classList.remove('active'));
   slides[idx].classList.add('active');
 }
-function nextSlide(){ slideIndex = (slideIndex + 1) % slides.length; showSlide(slideIndex); }
-function prevSlide(){ slideIndex = (slideIndex - 1 + slides.length) % slides.length; showSlide(slideIndex); }
+function nextSlide() { slideIndex = (slideIndex + 1) % slides.length; showSlide(slideIndex); }
+function prevSlide() { slideIndex = (slideIndex - 1 + slides.length) % slides.length; showSlide(slideIndex); }
 
-nextBtn.addEventListener('click', ()=>{ nextSlide(); resetSlideInterval(); });
-prevBtn.addEventListener('click', ()=>{ prevSlide(); resetSlideInterval(); });
+nextBtn.addEventListener('click', () => { nextSlide(); resetSlideInterval(); });
+prevBtn.addEventListener('click', () => { prevSlide(); resetSlideInterval(); });
 
-function startSlideInterval(){ slideInterval = setInterval(nextSlide, 6000); }
-function resetSlideInterval(){ clearInterval(slideInterval); startSlideInterval(); }
+function startSlideInterval() { slideInterval = setInterval(nextSlide, 6000); }
+function resetSlideInterval() { clearInterval(slideInterval); startSlideInterval(); }
 startSlideInterval();
 
-/* -- Tabla de contacto -- */
+/* -- Formulario de contacto -- */
 const contactForm = document.getElementById('contact-form');
-contactForm.addEventListener('submit', (e)=>{
+contactForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const fd = new FormData(contactForm);
   alert('Gracias ' + fd.get('name') + ', mensaje enviado (simulación).');
   contactForm.reset();
 });
 
+/* -- Tema oscuro -- */
 const btnTheme = document.getElementById('btn-toggle-theme');
-btnTheme.addEventListener('click', ()=>{
+btnTheme.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
 });
 
@@ -267,11 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCategory('frutas');
   updateCartUI();
   catButtons.forEach(btn => {
-    if (btn.dataset.cat === 'frutas') {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
+    if (btn.dataset.cat === 'frutas') btn.classList.add('active');
   });
 });
 
