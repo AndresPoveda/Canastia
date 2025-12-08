@@ -395,7 +395,7 @@ body{
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  transition: all 0.3s ease;
   width: 100%;
   max-width: 320px;
  
@@ -403,7 +403,7 @@ body{
 }
 
 .product-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-6px) scale(1.03);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
 }
 
@@ -739,7 +739,19 @@ select{padding:8px;border-radius:8px;border:1px solid #eee}
   margin-bottom: 30px;    
 }
 
+
 body {
   padding-top: 75px;
 }
 
+.instruction-text {
+ font-size: 14px;
+ color: var(--leaf-dark);
+ font-weight: 600;
+ background-color: var(--green-pale); 
+ border-radius: 8px;
+ padding: 12px 15px;
+ border-left: 4px solid var(--leaf);
+ margin: 0 0 12px 0; 
+ 
+}

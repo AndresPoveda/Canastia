@@ -76,6 +76,29 @@ function formatCurrency(val) {
 function kgToLb(kg) { return kg * KG_TO_LB; }
 function lbToKg(lb) { return lb / KG_TO_LB; }
 
+/* -- Nueva Función para Notificación (Toast) -- */
+function showCartNotification(productName, addedWeightKg, unit) {
+  let displayWeight;
+  let displayUnit;
+
+  if (unit === 'lb') {
+    displayWeight = +(kgToLb(addedWeightKg)).toFixed(2);
+    displayUnit = 'lb';
+  } else {
+ 
+    displayWeight = +(addedWeightKg).toFixed(2);
+    displayUnit = 'kg';
+  }
+  
+  const message = `✅ ${productName} (${displayWeight} ${displayUnit}) agregado al carrito.`;
+
+  console.log('--- NOTIFICACIÓN (TOAST) ---');
+  console.log(message);
+  console.log('---------------------------');
+  
+  alert(message); 
+}
+
 /* -- Renderizar productos -- */
 function renderCategory(categoryKey) {
   productArea.innerHTML = '';
@@ -128,6 +151,7 @@ function renderCategory(categoryKey) {
 /* -- Carrito funciones -- */
 function addToCart(product, weightKg = 1, unidad = 'kg') {
   const existing = cart.find(i => i.id === product.id);
+  const addedWeight = +weightKg.toFixed(3);
   if (existing) {
     existing.weightKg = +(existing.weightKg + weightKg).toFixed(3);
   } else {
@@ -136,10 +160,12 @@ function addToCart(product, weightKg = 1, unidad = 'kg') {
       nombre: product.nombre,
       img: product.img,
       pricePerKg: product.pricePerKg || product.precioKg || 0,
-      weightKg: +weightKg.toFixed(3),
+      weightKg: addedWeight,
       unidad: unidad
     });
   }
+  showCartNotification(product.nombre, addedWeight, unidad);
+
   updateCartUI();
   openCart();
 }
